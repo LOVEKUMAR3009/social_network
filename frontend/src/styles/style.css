@@ -1,0 +1,53 @@
+sensible global reset
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* base page rules */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* avoid hiding overflow here — keep for debugging; remove if you used it just to hide */
+  /* overflow-x: hidden; */
+}
+
+/* root container: use min-height, avoid 100vw */
+#root {
+  min-height: 100vh;    /* fill vertical viewport */
+  width: 100%; 
+  background-color: #bebbd2;      
+   
+  overflow-x: hidden;   /* optional: last-resort guard */
+}
+
+/* make images and iframes responsive */
+img, video, iframe {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* utility container to center content and prevent overflow */
+.container {
+  width: 100%;
+  max-width: 1200px;  /* change to desired max */
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+/* avoid using 100vw for full-width elements; if you must, subtract scrollbar width */
+.full-width {
+  width: 100%;
+}
+
+/* break long text/URLs */
+p, span, td {
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+
