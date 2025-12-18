@@ -50,7 +50,6 @@ class LoginView(APIView):
         if user is not None:
             # Generate JWT tokens
             refresh = RefreshToken.for_user(user)
-            print(refresh)
             return Response({
                 'message': 'Login successful',
                 'user': UserProfileSerializer(user, context={'request': request}).data,
