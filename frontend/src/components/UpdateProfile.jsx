@@ -5,7 +5,7 @@ import axiosInstance from "../utils/axiosInstance";
 import { AuthContext } from "../context/AuthProvider";
 
 const UpdateProfile = () => {
-    const {user,setUser} = useContext(AuthContext)
+  const {user,setUser} = useContext(AuthContext)
   const [imageUrl, setImageUrl] = useState(user.profile_picture); // preview URL
   const [image, setImage] = useState(null); // actual File
   const [fullName, setFullName] = useState(user.full_name);

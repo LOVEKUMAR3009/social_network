@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Image, X } from "lucide-react";
 import axiosInstance from "../utils/axiosInstance";
