@@ -4,8 +4,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404
 
-from .models import Post, PostLike
-from .serializers import PostSerializer, PostLikeToggleSerializer
+from .models import Post, PostLike ,Comment
+from .serializers import PostSerializer, PostLikeToggleSerializer ,CommentSerializer ,CommentCreateSerializer
 
 
 class PostListCreateView(generics.ListCreateAPIView):
@@ -101,3 +101,27 @@ class PostReactToggleAPIView(APIView):
 
         # Return the resulting reaction explicitly for frontend
         return Response({"reaction": post_like.reaction}, status=status.HTTP_200_OK)
+
+
+class CommentListView(generics.ListAPIView):
+    serializer_class = CommentSerializer
+    permission_classes = [permissions.AllowAny]
+    def get_queryset(self):
+        post_id = self.kwargs.get('post_id')
+        return (
+            Comment.objects
+            .filter(post_id=post_id)
+            .select_related('user')
+            .order_by('-created_at')
+        )
+
+
+class CommentCreateView(generics.CreateAPIView):
+    serializer_class = CommentCreateSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(
+            user=self.request.user,
+            post_id=self.kwargs['post_id']
+        )

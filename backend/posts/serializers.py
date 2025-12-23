@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework import serializers
 from django.db.models import Count, Q, Prefetch
 
-from .models import Post, PostLike
+from .models import Post, PostLike, Comment
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -130,3 +130,23 @@ class PostLikeToggleSerializer(serializers.Serializer):
 
         post_like.save()
         return post_like
+
+
+class CommentSerializer(serializers.ModelSerializer):
+    user_email = serializers.EmailField(source='user.email', read_only=True)
+    user_id = serializers.IntegerField(source='user.id', read_only=True)
+
+    class Meta:
+        model = Comment
+        fields = [
+            'id',
+            'user_id',
+            'user_email',
+            'text',
+            'created_at',
+        ]
+
+class CommentCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = ['text']

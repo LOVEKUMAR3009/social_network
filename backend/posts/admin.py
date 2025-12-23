@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import PostLike, Post
+from .models import PostLike, Post ,Comment
 
 @admin.register(PostLike)
 class PostLikeAdmin(admin.ModelAdmin):
@@ -14,3 +14,7 @@ class PostAdmin(admin.ModelAdmin):
     list_display = ('id', 'user', 'description', 'created_at')
     search_fields = ('user__email', 'description')
     readonly_fields = ('created_at',)
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ('id','user','text','created_at')
