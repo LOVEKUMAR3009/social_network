@@ -7,7 +7,7 @@ const Login = () => {
   const navigate = useNavigate()
   const [email,setEamil] = useState('')
    const [password, setPassword] = useState("");
-   const [error, setError] = useState({});
+   const [error, setError] = useState(null);
   const handlenavigation = ()=>{
       navigate('/signup')
   }
@@ -35,7 +35,9 @@ const Login = () => {
       // console.log(user)
       navigate('/dashboard')
     }catch(error){
-        setError(error.response.data)
+        // console.log(error.status)
+        console.log(error)
+        setError(error.response.data.error)
     }
 
   }
@@ -86,21 +88,29 @@ const Login = () => {
                   className="border border-gray-700/50 bg-gray-200  w-full p-2 rounded focus:outline-blue-200"
                 />
               </div>
-              <button type="submit" className="w-full mt-2 bg-blue-600 text-white p-2 rounded-2xl hover:bg-blue-700">
+              {error  && (
+                <p className="text-red-500 text-xs">{error}</p>
+              )}
+              <button
+                type="submit"
+                className="w-full mt-2 bg-blue-600 text-white p-2 rounded-2xl hover:bg-blue-700"
+              >
                 Login
               </button>
             </form>
 
             <div className="text-center mt-4">
-            <p className="text-sky-400 text-xs">
-              Don't have account?{" "}
-              <span onClick={handlenavigation} className="text-sm ext-sky-400 underline hover:cursor-pointer">
-                Create Account
-              </span>
-            </p>
+              <p className="text-sky-400 text-xs">
+                Don't have account?{" "}
+                <span
+                  onClick={handlenavigation}
+                  className="text-sm ext-sky-400 underline hover:cursor-pointer"
+                >
+                  Create Account
+                </span>
+              </p>
+            </div>
           </div>
-          </div>
-          
         </div>
       </div>
     </>

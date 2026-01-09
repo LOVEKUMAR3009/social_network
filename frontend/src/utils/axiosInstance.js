@@ -30,7 +30,7 @@ axiosInstance.interceptors.response.use(function(response){
 }, async function(error){
     const originalRequest = error.config;
     // console.log(originalRequest)
-    if(error.response?.status=== 401 && !originalRequest.retry){
+    if(error.response?.status=== 401 && localStorage.getItem('refreshToken') && !originalRequest.retry){
         // console.log(error)
         originalRequest.retry = true
         const refreshToken = localStorage.getItem("refreshToken")

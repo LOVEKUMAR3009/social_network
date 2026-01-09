@@ -1,14 +1,18 @@
-import React, { useState } from "react";
-import { Image, X, ThumbsDown, ThumbsUp, CircleUserRound } from "lucide-react";
+import React, { useContext, useState } from "react";
+import { Image, X, ThumbsDown, ThumbsUp, CircleUserRound, CloudCog } from "lucide-react";
 import axiosInstance from "../utils/axiosInstance";
 
 import convertDate from "../utils/DateConversion";
+import { AuthContext } from "../context/AuthProvider";
 const Posts = ({ postId, post, getPosts }) => {
+  const{user} = useContext(AuthContext)
   const [likecount, setlikcount] = useState(post.likes_count);
   const [disLikecount, setDisLikcount] = useState(post.dislikes_count);
   const [userReaction, setUserReaction] = useState(() => post.user_reaction || "none");
   const readabledate = convertDate(post.created_at);
-
+  const loggedinuser = user.email
+  const postuseremail = post.user_email
+  console.log(loggedinuser,post)
   const [like, setlike] = useState("none");
 
   const handlePostDelete = async () => {
@@ -65,7 +69,12 @@ const Posts = ({ postId, post, getPosts }) => {
           {/* Avatar wrapper: fixed square, rounded-full, overflow-hidden */}
           <div className="w-10 h-10 rounded-full overflow-hidden bg-white flex items-center justify-center">
             {!post.user_profile_picture ? (
-              <CircleUserRound color="#151414" size={36} strokeWidth={1.7} absoluteStrokeWidth />
+              <CircleUserRound
+                color="#151414"
+                size={36}
+                strokeWidth={1.7}
+                absoluteStrokeWidth
+              />
             ) : (
               <img
                 src={post.user_profile_picture}
@@ -78,17 +87,32 @@ const Posts = ({ postId, post, getPosts }) => {
           <div className="flex-1">
             <p className="mr-2.5">{post.description}</p>
             <p className="text-sm">Posted on - {readabledate}</p>
+      
           </div>
+          {(user.email === post.user_email) && (
 
-          <X onClick={handlePostDelete} className="cursor-pointer absolute top-0 right-0" size={18} />
+          <X
+            onClick={handlePostDelete}
+            className="cursor-pointer absolute top-0 right-0"
+            size={18}
+          />
+          )}
         </div>
 
         <div className="mt-4">
-          <img src={post?.image} alt="" className="object-cover max-h-[300px] rounded w-full" />
+          <img
+            src={post?.image}
+            alt=""
+            className="object-cover max-h-[300px] rounded w-full"
+          />
         </div>
 
         <div className="mt-4 flex max-w-[200px] justify-between">
-          <div className={`flex items-center ${userReaction === "like" ? "text-blue-600" : ""}`}>
+          <div
+            className={`flex items-center ${
+              userReaction === "like" ? "text-blue-600" : ""
+            }`}
+          >
             <ThumbsUp
               onClick={() => {
                 handleRaction("like");
@@ -96,9 +120,17 @@ const Posts = ({ postId, post, getPosts }) => {
               className={`mr-1 cursor-pointer`}
               color="#063b74"
             />
-            <p className={`p-1 ${userReaction === "like" ? "text-blue-500" : ""}`}>{`Like ${likecount}`}</p>
+            <p
+              className={`p-1 ${
+                userReaction === "like" ? "text-blue-500" : ""
+              }`}
+            >{`Like ${likecount}`}</p>
           </div>
-          <div className={`flex items-center ${userReaction === "dislike" ? "text-blue-600" : ""}`}>
+          <div
+            className={`flex items-center ${
+              userReaction === "dislike" ? "text-blue-600" : ""
+            }`}
+          >
             <ThumbsDown
               onClick={() => {
                 handleRaction("dislike");
@@ -106,7 +138,11 @@ const Posts = ({ postId, post, getPosts }) => {
               className="mr-1 cursor-pointer"
               color="#063b74"
             />
-            <p className={`p-1 ${userReaction === "dislike" ? "text-blue-500" : ""}`}>{`Dislike ${disLikecount}`}</p>
+            <p
+              className={`p-1 ${
+                userReaction === "dislike" ? "text-blue-500" : ""
+              }`}
+            >{`Dislike ${disLikecount}`}</p>
           </div>
         </div>
       </div>
