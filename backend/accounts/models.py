@@ -9,13 +9,14 @@ class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
         if not email:
             raise ValueError('The Email field must be set')
-        email = self.normalize_email(email)
-        user = self.model(email=email, **extra_fields)
+        email = self.normalize_email(email) # it will lowercase only the domain name
+        user = self.model(email=email, **extra_fields) # ojbect instancitaion happen 
         user.set_password(password)  # Django's built-in password hashing
         user.save(using=self._db)
         return user
     
     def create_superuser(self, email, password=None, **extra_fields):
+        # explicitly setting the key for super user so it can't be missed 
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
         return self.create_user(email, password, **extra_fields)
@@ -23,7 +24,7 @@ class CustomUserManager(BaseUserManager):
     
 class CustomUser(AbstractUser):
     """Custom User model with email as username"""
-    
+    extensions = ['jpg', 'jpeg', 'png']
     username = None  # Remove username field
     email = models.EmailField(unique=True, db_index=True)
     full_name = models.CharField(max_length=255)
@@ -33,7 +34,10 @@ class CustomUser(AbstractUser):
         null=True,
         blank=True,
         validators=[
-            FileExtensionValidator(allowed_extensions=['jpg', 'jpeg', 'png'])
+            FileExtensionValidator(
+                allowed_extensions=extensions,
+                 message=f"Unsupported file format. Allowed formats: {', '.join(extensions)}."
+            )
         ]
     )
     created_at = models.DateTimeField(auto_now_add=True)

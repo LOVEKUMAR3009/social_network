@@ -8,7 +8,8 @@ User = get_user_model()
 
 class SignupSerializer(serializers.ModelSerializer):
     """Serializer for user registration"""
-    
+    # explicitly declaed filed in serializer 
+    # data is populated from the request if the key and field_name is same
     password = serializers.CharField(
         write_only=True,
         required=True,
@@ -34,10 +35,11 @@ class SignupSerializer(serializers.ModelSerializer):
         read_only_fields = ['id']
 
     def validate_email(self, value):
-        """Ensure email is unique"""
-        if User.objects.filter(email=value).exists():
+        value = value.lower()
+        if User.objects.filter(email__iexact=value).exists():
             raise serializers.ValidationError("This email is already registered.")
-        return value.lower()
+        return value
+
     
     def validate_date_of_birth(self, value):
         """Validate date of birth"""
@@ -54,16 +56,7 @@ class SignupSerializer(serializers.ModelSerializer):
         max_size = 5 * 1024 * 1024  # 5MB
         if value.size > max_size:
             raise serializers.ValidationError("Image size cannot exceed 5MB.")
-
-        # ---- 2. Extension validation ----
-        valid_extensions = ['jpg', 'jpeg', 'png', 'webp']
-        extension = value.name.split('.')[-1].lower()
-
-        if extension not in valid_extensions:
-            raise serializers.ValidationError(
-                f"Unsupported file format. Allowed formats: {', '.join(valid_extensions)}"
-            )
-
+    
         return value
     
     def validate(self, attrs):
