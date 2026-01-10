@@ -17,6 +17,10 @@ const Signup = () => {
   const [confirmPassword, setConfirmPassword] = useState(false);
   const navigate = useNavigate();
 
+    const handlenavigation = () => {
+      navigate("/login");
+    };
+
   // Clean up object URL on unmount or when imageUrl changes
   useEffect(() => {
     return () => {
@@ -190,7 +194,7 @@ const Signup = () => {
   return (
     <>
       <div className="min-h-screen w-full bg-gray-200">
-        <div className="text-center p-5 text-3xl font-bold">
+        <div className="text-center p-3 text-3xl font-bold">
           <h1>Join Social Network</h1>
         </div>
 
@@ -368,10 +372,22 @@ const Signup = () => {
 
               <button
                 type="submit"
-                className="w-full mt-2 bg-blue-600 text-white p-2 rounded-2xl hover:bg-blue-700"
+                className="w-full mt-2 bg-blue-600 text-white p-2 rounded-2xl hover:bg-blue-700 hover:cursor-pointer active:bg-blue-400"
               >
                 Signup
               </button>
+
+              <div className="text-center mt-1">
+                <p className="text-sky-400 ">
+                  Already account?{" "}
+                  <span
+                    onClick={handlenavigation}
+                    className="text-sm ext-sky-400 underline hover:cursor-pointer"
+                  >
+                   Login
+                  </span>
+                </p>
+              </div>
             </form>
           </div>
         </div>

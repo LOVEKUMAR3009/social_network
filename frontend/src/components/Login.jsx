@@ -88,12 +88,10 @@ const Login = () => {
                   className="border border-gray-700/50 bg-gray-200  w-full p-2 rounded focus:outline-blue-200"
                 />
               </div>
-              {error  && (
-                <p className="text-red-500 text-xs">{error}</p>
-              )}
+              {error && <p className="text-red-500 text-xs">{error}</p>}
               <button
                 type="submit"
-                className="w-full mt-2 bg-blue-600 text-white p-2 rounded-2xl hover:bg-blue-700"
+                className="w-full mt-2 bg-blue-600 text-white p-2 rounded-2xl hover:bg-blue-700 hover:cursor-pointer active:bg-blue-500"
               >
                 Login
               </button>

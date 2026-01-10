@@ -19,7 +19,7 @@ class PostListCreateView(generics.ListCreateAPIView):
     def get_queryset(self):
         user = self.request.user
         # annotate counts using reaction values (not is_like)
-        base_qs = Post.objects.filter(user=user).annotate(
+        base_qs = Post.objects.all().annotate(
             likes_count=Count('likes', filter=Q(likes__reaction=PostLike.REACTION_LIKE)),
             dislikes_count=Count('likes', filter=Q(likes__reaction=PostLike.REACTION_DISLIKE)),
         ).select_related('user')
